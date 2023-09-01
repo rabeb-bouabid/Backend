@@ -22,7 +22,7 @@ export class userentity {
 
     @Prop()
     password:string
-
+    
     @Prop()
     refreshtoken:string
  
@@ -31,12 +31,15 @@ export class userentity {
 
     @Prop({type:SchemaTypes.ObjectId,ref:"Reservation"})
     reservationId:Types.ObjectId[]
-   
-    
+    @Prop({type:SchemaTypes.ObjectId,ref:"Services"})
+    serviceId:Types.ObjectId
+
+  
 }
 
-export const userSchema = SchemaFactory.createForClass(userentity).pre("save", async function (){
-
-    this.password = await argon2.hash(this.password)
-});
-
+export const userSchema = SchemaFactory.createForClass(userentity).pre("save", async function () {
+    if (this.password) {
+      this.password = await argon2.hash(this.password);
+    }
+  });
+  

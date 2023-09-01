@@ -15,11 +15,6 @@ export class CreateServicesDto {
     @IsString()
     @IsNotEmpty()
     readonly price: number;
-    
-    @IsString()
-    @IsNotEmpty()
-    adminId: string;
-
      file: string;
 
    

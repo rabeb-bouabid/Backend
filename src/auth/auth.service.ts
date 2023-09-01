@@ -43,7 +43,7 @@ export class AuthService {
       throw new BadRequestException('Password is incorrect');
     const tokens = await this.getTokens(user._id, user.username);
     await this.upddateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
+    return {tokens,user}
   }
 
   async getTokens(userId: string, username: string) {
@@ -159,5 +159,10 @@ export class AuthService {
     const tokens = await this.getTokensAdmin(admin.id, admin.username);
     await this.upddateRefreshTokenAdmin(admin.id, tokens.refreshToken);
     return tokens;
+  }
+
+    
+  async logout(userId: string) {
+    this.usersService.updateUser(userId, { refreshtoken: null });
   }
 }

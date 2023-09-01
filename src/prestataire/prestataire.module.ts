@@ -6,8 +6,10 @@ import { prestataireController } from './prestataire.controller';
 import { prestataireService } from './prestataire.service';
 import { ServicesSchema } from 'src/services/entities/service.entity';
 
+
+
 @Module({
-  imports:[MongooseModule.forFeature([{ name: 'responsable', schema:prestataireSchema},{ name: 'services', schema:ServicesSchema}])
+  imports:[MongooseModule.forFeature([{ name: 'responsable', schema:prestataireSchema},{ name: 'services', schema:ServicesSchema},{ name: 'responsable', schema:prestataireSchema}])
    ],
   controllers: [prestataireController],
   providers: [prestataireService]

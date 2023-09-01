@@ -6,20 +6,32 @@ import { SchemaTypes, Types } from "mongoose";
 @Schema({ timestamps: true })
 export class prestataireentity {
     @Prop()
-    Fullname: string;
-    @Prop()
-    password:string
-    @Prop()
-    email: string;
+    fullname: string;
     @Prop()
     file: string
-   
+    @Prop()
+    adresse: string
+    @Prop()
+    telephone: string
+    @Prop()
+    detail: string
+    @Prop()
+    experience: string
+    @Prop()
+    servicename: string
+    @Prop()
+    certification: string
+    @Prop()
+    files: string[]
     @Prop({type:SchemaTypes.ObjectId,ref:"Services"})
     serviceId:Types.ObjectId
+    @Prop([{type:SchemaTypes.ObjectId,ref:"Reservation"}])
+    reservationId:Types.ObjectId[]
+   
+    
 }
 
 export const prestataireSchema = SchemaFactory.createForClass(prestataireentity).pre("save", async function (){
 
-    this.password = await argon2.hash(this.password)
 });
 

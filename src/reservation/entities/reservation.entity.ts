@@ -8,24 +8,21 @@ import { Module } from '@nestjs/common';
 export class ReservationEntity extends Document {
 
     @Prop()
-    Datedébut: Date;
-
+    datedebut: Date;
     @Prop()
-    Datefin: Date;
-
+    adresse: string;
     @Prop()
-    TypeEtablissement: string;
+    heure: string;
     @Prop()
-    TypeService: string;
-
-    @Prop()
-    MontantTotal: number;
-
+    serviceName: string;
     @Prop({type:SchemaTypes.ObjectId,ref:"Services"})
-    serviceId:Types.ObjectId
+    serviceId:Types.ObjectId;
     @Prop({type:SchemaTypes.ObjectId,ref:"user"})
-    userId:Types.ObjectId
-    
+    userId:Types.ObjectId;
+    @Prop({type:SchemaTypes.ObjectId,ref:"responsable"})
+    PrestataireId:Types.ObjectId;
+    @Prop([{type:SchemaTypes.ObjectId,ref:"notification"}])
+    notifications:Types.ObjectId[];
 }
 
 export const  ReservationSchema = SchemaFactory.createForClass( ReservationEntity);

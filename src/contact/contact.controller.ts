@@ -4,6 +4,7 @@ import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { contactentity } from './entities/contact.entity';
 import * as nodemailer from 'nodemailer'
+import {HttpStatus,Query,Put,Res,} from '@nestjs/common';
 
 @Controller('contact')
 export class ContactController {
@@ -17,42 +18,65 @@ export class ContactController {
     return { message: 'Formulaire envoyé avec succès' };
   }
 
+  @Get('getMessages/:id')
+  async getMessages(@Res() response, @Param('id') ContactId: string) {
+    try {
+      const existingMessages = await this.contactService.getMessage(
+        ContactId,
+      );
+      return response.status(HttpStatus.OK).json({
+        message: 'Message found successfully',
+        data: existingMessages,
+        status: HttpStatus.OK,
+      });
+    } catch (err) {
+      return response.status(err.status).json({
+        message: err.response,
+        status: HttpStatus.BAD_REQUEST,
+        data: null,
+      });
+    }
+  }
+    
+  
   @Get()
   async getContacts() {
     const contacts = await this.contactService.getContacts();
     return contacts;
   }
-
-
-  @Post()
-  async createContact(@Body() createContactDto: CreateContactDto) {
-    const { username, email, message } = createContactDto;
-    await this.sendEmail(username, email, message);
-    return this.contactService.createContact(createContactDto);
+   @Delete(':id')
+  async deleteContact(@Res() response, @Param('id') contactId: string) {
+    try {
+      const deletedService = await this.contactService.deleteContact(contactId);
+      return response.status(HttpStatus.OK).json({
+        message: 'Contact deleted successfully',
+        status: HttpStatus.OK,
+        data: deletedService,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: err.response.message,
+        status: HttpStatus.BAD_REQUEST,
+        data: null
+      });
+    }
   }
-
-  
-  async sendEmail(name: string, email: string, message: string): Promise<void> {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.example.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'rahmal@gmail.com',
-        pass: '123',
-      },
-    });
-
-  
-    const mailOptions = {
-      from: 'your-email@example.com',
-      to: 'rabeb@gmail.com',
-      subject: 'Nouveau message de contact',
-      text: `Nom: ${name}\nEmail: ${email}\nMessage: ${message}`,
-    };
-
-  
-    await transporter.sendMail(mailOptions);
+  @Delete()
+  async deleteAllMsg(@Res() response,  ) {
+    try {
+      const deletedService = await this.contactService.deleteAllMsg();
+      return response.status(HttpStatus.OK).json({
+        message: 'message deleted successfully',
+        status: HttpStatus.OK,
+        data: deletedService,
+      });
+    } catch (err) {
+      return response.status(HttpStatus.BAD_REQUEST).json({
+        message: err.response.message,
+        status: HttpStatus.BAD_REQUEST,
+        data: null
+      });
+    }
   }
 
 }

@@ -12,7 +12,9 @@ export class CreateLoginDto {
   @IsString()
   @IsNotEmpty()
   readonly password: string;
-  
+  @IsString()
+  @IsNotEmpty()
+  readonly file: string;
 
 }
 

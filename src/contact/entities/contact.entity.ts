@@ -16,6 +16,7 @@ export class contactentity
     subject: string
     @Prop()
     message: string
+    
 }
 export const contactSchema = SchemaFactory.createForClass(contactentity).pre("save", async function (){
     

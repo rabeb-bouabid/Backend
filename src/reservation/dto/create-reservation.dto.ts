@@ -1,30 +1,35 @@
 import { IsNotEmpty, IsString } from "class-validator";
 
-
 export class CreateReservationDto {
     @IsString()
     @IsNotEmpty()
-     Datedébut: Date
-    @IsString()
-    @IsNotEmpty()
-     Datefin: Date;
-    @IsString()
-    @IsNotEmpty()
-    TypeService: string;
-    @IsString()
-    @IsNotEmpty()
-    TypeEtablissement: string;
+    datedebut: Date;
 
     @IsString()
     @IsNotEmpty()
-    MontantTotal: number;
+    heure: string;
 
     @IsString()
     @IsNotEmpty()
-     userId: string;
+    userId: string;
 
-     @IsString()
-     @IsNotEmpty()
-      serviceId: string;
+    @IsString()
+    @IsNotEmpty()
+    serviceName: string;
+
+    @IsString()
+    @IsNotEmpty()
+    serviceId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    adresse: string;
+
+    @IsString()
+    @IsNotEmpty()
+    notifications: string;
+
+    @IsString()
+    @IsNotEmpty()
+    PrestataireId: string;
 }
-

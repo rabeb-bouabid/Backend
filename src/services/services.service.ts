@@ -11,7 +11,8 @@ import { IService } from './interface/service.interface';
 @Injectable()
 export class ServicesService {
   
-  constructor(@InjectModel('Services') private ServicesModel: Model<IService>,@InjectModel('admin') private AdminModel: Model<Iadmin>,) { }
+  constructor(@InjectModel('Services') private ServicesModel: Model<IService>,
+              @InjectModel('admin') private AdminModel: Model<Iadmin>,) { }
   async createServices(createServicesDto: CreateServicesDto): Promise<IService> {
     const newServices = await new this.ServicesModel(createServicesDto);
     // await this.AdminModel.findByIdAndUpdate(createServicesDto.adminId,{$push:{services:newServices}})

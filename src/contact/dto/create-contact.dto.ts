@@ -15,8 +15,8 @@ export class CreateContactDto {
     @IsString()
     @IsNotEmpty()
     readonly subject: string
-    
     @IsString()
     @IsNotEmpty()
     readonly message: string;
+   
 }

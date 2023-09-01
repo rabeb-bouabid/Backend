@@ -17,6 +17,25 @@ import { request } from 'http';*/
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) { }
+
+  @Get()
+  async getAllUser(@Res() response) {
+    try {
+      const UserData = await this.userService.getAllUsers();
+      return response.status(HttpStatus.OK).json({
+        message: 'All Users data found successfully',
+        status: HttpStatus.OK,
+        data: UserData,
+      });
+    } catch (err) {
+      return response.status(err.status).json({
+        message: err.response,
+        status: HttpStatus.BAD_REQUEST,
+        data: null,
+      });
+    }
+  }
+
   @Post()
   async createUSer(@Res() response, @Body() createUserDto: CreateUserDto,)  {
     try {
@@ -54,23 +73,7 @@ export class UserController {
   }
   
 
-  @Get()
-  async getAllUser(@Res() response) {
-    try {
-      const UserData = await this.userService.getAllUsers();
-      return response.status(HttpStatus.OK).json({
-        message: 'All Users data found successfully',
-        status: HttpStatus.OK,
-        data: UserData,
-      });
-    } catch (err) {
-      return response.status(err.status).json({
-        message: err.response,
-        status: HttpStatus.BAD_REQUEST,
-        data: null,
-      });
-    }
-  }
+  
  
   @Get('/:id')
  /*  @ApiParam({

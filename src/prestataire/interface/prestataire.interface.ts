@@ -1,9 +1,15 @@
 import { Document } from "mongoose";
 export interface Iprestataire extends Document {
-    Fullname: string;
-    password:string
+    fullname: string;
+    serviceId:string
     file:string
-    email:string
-    serviceId:string;
+    detail:string
+    adresse: string
+    telephone: string
+    experience: string
+    certification: string
+    servicename:string
+    files: string
+    
     
 }

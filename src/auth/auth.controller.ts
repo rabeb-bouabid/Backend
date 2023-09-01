@@ -14,9 +14,18 @@ import { diskStorage } from 'multer';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
- 
   @Post('/signup')
-   signup(@Body() createUserDto:CreateUserDto) {
+  @UseInterceptors(
+    FileInterceptor('file', {
+        storage:diskStorage({
+        destination: './upload/imagesUser',
+         filename: (_request, file, callback) =>
+          callback(null, `${new Date().getTime()}-${file.originalname}`),
+      }),
+    }),
+  )
+   signup(@Body() createUserDto:CreateUserDto ,@UploadedFile()file) {
+    createUserDto.file = file.filename;
     return this.authService.signUp(createUserDto);
    }
 
@@ -40,8 +49,6 @@ export class AuthController {
       }),
     }),
   )
-  
-
   signupadmin(@Body() createAdminDto: CreateAdminDto ,@UploadedFile()file) {
     createAdminDto.file = file.filename; 
     return this.authService.signUpAdmin(createAdminDto);
@@ -59,7 +66,7 @@ export class AuthController {
   // signIn(@Body() data: CreateLoginDto) {
   //   return this.authService.signIn(data);
   // }
-
+ 
   @UseGuards(AccessTokenGuard)
   @Get('logoutAdmin')
   logoutAdmin(@Req() req: Request) {
@@ -75,4 +82,11 @@ export class AuthController {
   }
 
   
+  @UseGuards(AccessTokenGuard)
+  @Get('logout')
+  logout(@Req() req:Request) {
+    return this.authService.logout(req.user['sub']);
+
+
+   }
 }

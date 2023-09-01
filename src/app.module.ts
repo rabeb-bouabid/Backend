@@ -10,15 +10,15 @@ import { ReservationModule } from './reservation/reservation.module';
 import { ServicesModule } from './services/services.module';
 import { PrestataireModule } from './prestataire/prestataire.module';
 import { ContactModule } from './contact/contact.module';
-
-
+import { NotificationModule } from './notification/notification.module';
+import { FeedbackModule } from './feedback/feedback.module';
 
 
 
 @Module({
 
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017', { dbName: 'crud'}),  UserModule,ConfigModule.forRoot({isGlobal:true}), AuthModule, AdminModule, ReservationModule,ServicesModule, PrestataireModule, ContactModule ],
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017', { dbName: 'crud'}),  UserModule,ConfigModule.forRoot({isGlobal:true}), AuthModule, AdminModule, ReservationModule,ServicesModule, PrestataireModule, ContactModule, NotificationModule, FeedbackModule,],
   controllers: [AppController],
   providers: [AppService],
 })

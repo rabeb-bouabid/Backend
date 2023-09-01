@@ -1,12 +1,11 @@
 import { Document } from "mongoose";
 
 export interface IReservation extends Document {
-    readonly Datedébut: string;
-    readonly Datefin: string;
-    readonly TypeEtablissement: string;
-    readonly TypeService: string;
-     readonly MontantTotal: number;
+     datedébut: string;
+     heure: string;
+     serviceName: string;
+     adresse: string;
      serviceId:string;
      userId:string;
-    
+     PrestataireId:string;
 }

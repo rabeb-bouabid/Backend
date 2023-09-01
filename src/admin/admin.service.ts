@@ -13,7 +13,7 @@ export class AdminService {
   async createAdmin(createAdminDto: CreateAdminDto): Promise<Iadmin> {
     const newAdmin = await new this.AdminModel(createAdminDto);
     return newAdmin.save();
-  }
+  } 
   async findById(id: string): Promise<Iadmin>{
     return this.AdminModel.findById(id);
   }
@@ -51,6 +51,9 @@ export class AdminService {
 
   async findByAdminusername(username: string): Promise<Iadmin> {
     return this.AdminModel.findOne({ username }).exec();
+  }
+  async findByAdminEmail(email: string): Promise<Iadmin> {
+    return this.AdminModel.findOne({ email }).exec();
   }
 
   async deleteAdmin(AdminId: string): Promise<Iadmin> {

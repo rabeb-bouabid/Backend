@@ -11,9 +11,9 @@ import { IntUser } from './interface/user.interface';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('user') private UserModel: Model<IntUser>,) { }
-  async createUser(CreateUserDto: CreateUserDto): Promise<IntUser> {
-    const newUser = await new this.UserModel(CreateUserDto);
+  constructor(@InjectModel('user') private UserModel: Model<IntUser>) { }
+  async createUser(createUserDto: CreateUserDto): Promise<IntUser> {
+    const newUser = await new this.UserModel(createUserDto);
     return newUser.save();
   }
   async findById(id: string): Promise<IntUser>{
@@ -29,12 +29,13 @@ export class UserService {
   }
  
   async getUser(UserId: string): Promise<IntUser> {
-    const existingUser = await this.UserModel.findById(UserId).exec();
+    const existingUser = await this.UserModel.findById(UserId).populate('feedback').exec();
     if (!existingUser) {
       throw new NotFoundException(`User #${UserId} not found`);
     }
     return existingUser;
   }
+  
   async deleteUser(UserId: string): Promise<IntUser> {
     const deletedUser = await this.UserModel.findByIdAndDelete(UserId);
     if (!deletedUser) {
@@ -50,6 +51,16 @@ export class UserService {
     }
     return existingUserByEmail;
   }
+  /* async getAllUsers(): Promise<IntUser[]> {
+    const UserData = await this.UserModel.find().populate('feedback').select("-__v");
+    if (!UserData || UserData.length == 0) {
+      throw new NotFoundException('User data not found!');
+    }
+    return UserData;
+  } */
+  async findByUsername(username: string): Promise<IntUser>{
+    return this.UserModel.findOne({username}).exec();
+  }
   async getAllUsers(): Promise<IntUser[]> {
     const UserData = await this.UserModel.find().select("-__v");
     if (!UserData || UserData.length == 0) {
@@ -57,7 +68,5 @@ export class UserService {
     }
     return UserData;
   }
-  async findByUsername(username: string): Promise<IntUser>{
-    return this.UserModel.findOne({username}).exec();
-  }
+  
 }

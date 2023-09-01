@@ -13,22 +13,21 @@ export class prestataireService {
   constructor(
     @InjectModel('responsable') private prestataireModel: Model<Iprestataire>,
     @InjectModel('services') private ServicesModel: Model<IService>,
+ 
   ) {}
-  async createprestataire(
-    CreateprestataireDto: CreateprestataireDto,
-  ): Promise<Iprestataire> {
-    const newprestataire = await new this.prestataireModel(
-      CreateprestataireDto,
-    );
+
+  async createprestataire(CreateprestataireDto: CreateprestataireDto): Promise<Iprestataire> {
+    const newprestataire = await new this.prestataireModel(CreateprestataireDto);
+
+    const savedPrestataire = await newprestataire.save();
+
     await this.ServicesModel.findByIdAndUpdate(CreateprestataireDto.serviceId, {
-      $push: { responsables: newprestataire },
+      $push: { responsables: savedPrestataire },
     });
-    return newprestataire.save();
-  }
-  async findById(id: string): Promise<Iprestataire> {
-    return this.prestataireModel.findById(id);
+    return savedPrestataire;
   }
 
+  
   async updateprestataire(
     prestataireId: string,
     UpdateprestataireDto: UpdateprestataireDto,
@@ -47,13 +46,12 @@ export class prestataireService {
   async getprestataire(prestataireId: string): Promise<Iprestataire> {
     const existingprestataire = await this.prestataireModel.findById(
       prestataireId,
-    ).exec();
+    )
     if (!existingprestataire) {
       throw new NotFoundException(`prestataire #${prestataireId} not found`);
     }
     return existingprestataire;
   }
-
 async getprestataireByService(serviceId: string): Promise<Iprestataire[]> {
 const service=await this.ServicesModel.findById(serviceId)
      const existingPrestataireByService = await this.prestataireModel.find(
@@ -97,4 +95,7 @@ const service=await this.ServicesModel.findById(serviceId)
   async findByprestatairename(prestatairename: string): Promise<Iprestataire> {
     return this.prestataireModel.findOne({ prestatairename }).exec();
   }
+
+  
+ 
 }
